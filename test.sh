@@ -56,8 +56,8 @@ docoruncmd() {
     docker-compose -f test-compose.yml run --rm -e LOCAL_USER_ID=999 $@
 }
 
-cp -ra ./example/. "$TMP/"
-
+cp -ra /tmp/example/. "$TMP/"
+ls "$TMP"
 cd "$TMP"
 
 echo '>>> Downloading Odoo src'
@@ -65,7 +65,8 @@ rm -rf "$TMP/odoo/src"
 wget -nv -O /tmp/odoo.tar.gz "$ODOO_URL"
 tar xfz /tmp/odoo.tar.gz -C odoo/
 mv "odoo/odoo-$VERSION" odoo/src
-
+ls odoo/src
+sudo chown -R 999:999 odoo/
 echo '>>> Run test for base image'
 sed "s|FROM .*|FROM ${IMAGE_LATEST}|" -i odoo/Dockerfile
 mkdir .cachedb
@@ -98,11 +99,6 @@ docoruntests -e CREATE_DB_CACHE="true" -e SUBS_MD5=testcache
 echo '>>> * run unit tests with runtests and re-use a dump'
 docoruntests -e LOAD_DB_CACHE="true" -e SUBS_MD5=testcache
 docodown
-
-echo '>>> * run tests for onbuild image'
-cp odoo/Dockerfile-onbuild odoo/Dockerfile
-sed "s|FROM .*|FROM ${IMAGE_LATEST}-onbuild|" -i odoo/Dockerfile
-cat odoo/Dockerfile
 
 docoruncmd odoo odoo --stop-after-init
 docoruntests
