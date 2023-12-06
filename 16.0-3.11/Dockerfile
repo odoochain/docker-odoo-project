@@ -1,5 +1,5 @@
 FROM python:3.11-bullseye 
-MAINTAINER Camptocamp
+MAINTAINER OdooChain
 ARG UID=999
 # create the working directory and a place to set the logs (if wanted)
 RUN mkdir -p /odoo /var/log/odoo
