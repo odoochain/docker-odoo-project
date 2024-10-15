@@ -17,8 +17,10 @@ if [ -z "$VERSION" ]; then
     echo "VERSION environment variable is missing"
     exit 1
 fi
+TMP=$(mktemp -d)
+echo "Working in $TMP"
 
-SRC=${SRC:=(mktemp -d)}
+SRC=${SRC:=$TMP}
 echo "Creating $SRC"
 
 cp -r ${VERSION}/. $SRC/
@@ -31,3 +33,5 @@ sed -i "1i FROM ${BUILD_TAG}-batteries" $SRC/Dockerfile-batteries-onbuild
 cp -r install/ $SRC
 cp -r start-entrypoint.d/ $SRC
 cp -r before-migrate-entrypoint.d/ $SRC
+#rm -rf $TMP
+#rm -rf $SRC

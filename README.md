@@ -106,7 +106,10 @@ $ make VERSION=11.0 BATTERIES=True
 # generate image camptocamp/odoo-project:10.0-batteries-latest and camptocamp/odoo-project:10.0-latest-batteries-onbuild
 $ make VERSION=10.0 BATTERIES=True
 ```
+```
+$ make VERSION=17.0 build
 
+```
 
 ## Configuration
 
